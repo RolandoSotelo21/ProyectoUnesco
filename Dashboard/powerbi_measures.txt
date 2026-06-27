@@ -1,0 +1,13 @@
+Total Cases = COUNTROWS(dataset)
+
+Countries Affected =
+DISTINCTCOUNT(dataset[country])
+
+Resolution Rate =
+AVERAGE(dataset[resolved])
+
+Impunity Rate =
+AVERAGE(dataset[impunity])
+
+Average Resolution Days =
+AVERAGE(dataset[resolution_days])
