@@ -1,409 +1,282 @@
-# Análisis Global sobre Seguridad de Periodistas e Impunidad Judicial  
-### Proyecto End-to-End de Análisis de Datos utilizando datos abiertos de UNESCO
+# Análisis Global de Asesinatos de Periodistas, Impunidad Judicial y Responsabilidad Gubernamental (1993–2026)
+
+Proyecto de análisis de datos basado en información pública de la UNESCO sobre periodistas asesinados a nivel mundial, el estado judicial de sus casos y la respuesta de los gobiernos a solicitudes oficiales de información.
 
 ---
 
 ## Descripción del Proyecto
 
-Este proyecto analiza casos de asesinatos de periodistas reportados por la UNESCO entre los años **1993 y 2026**, con el objetivo de identificar patrones globales relacionados con:
+La violencia contra periodistas representa una amenaza directa a la libertad de prensa y al acceso a información independiente. Sin embargo, en muchos países estos crímenes permanecen sin resolución judicial durante años o nunca llegan a ser esclarecidos.
 
-- Seguridad de periodistas a nivel mundial  
-- Tasas de impunidad judicial  
-- Impacto de las zonas de conflicto armado  
-- Sectores de medios con mayor nivel de riesgo  
-- Respuesta de gobiernos ante solicitudes judiciales  
-- Tendencias geográficas y temporales  
+Este proyecto tiene como objetivo analizar patrones globales relacionados con:
 
-El proyecto fue desarrollado simulando un caso real de negocio, cubriendo el flujo completo de análisis de datos: desde limpieza y transformación hasta generación de insights y visualización ejecutiva.
+- asesinatos de periodistas a nivel mundial
+- niveles de impunidad judicial por país y región
+- impacto de las zonas de conflicto en la resolución de casos
+- perfil de riesgo de las víctimas
+- nivel de respuesta de los gobiernos ante solicitudes formales de UNESCO
+- tendencias históricas y geográficas desde 1993
 
----
-
-## Problema de Negocio
-
-El ejercicio del periodismo representa un alto nivel de riesgo en diversas regiones del mundo, especialmente en países con conflictos armados, inestabilidad política o sistemas judiciales débiles.
-
-Uno de los principales problemas identificados es la **impunidad**, es decir, la cantidad de casos donde no existe una resolución judicial efectiva.
-
-Este proyecto busca responder preguntas como:
-
-- ¿Qué países presentan mayor cantidad de asesinatos de periodistas?
-- ¿Qué porcentaje de casos permanece sin resolver?
-- ¿Existe relación entre trabajar en zonas de conflicto y la probabilidad de resolución judicial?
-- ¿Qué tipo de medio presenta mayor exposición al riesgo?
-- ¿Cuánto tiempo tarda, en promedio, una resolución judicial?
+El proyecto fue desarrollado siguiendo un flujo completo de análisis de datos, desde limpieza y transformación hasta análisis estadístico, SQL y visualización en dashboard.
 
 ---
 
-## Fuente de Datos
+## Objetivos del Análisis
+
+Identificar factores estructurales asociados a la violencia contra periodistas y responder preguntas relevantes desde una perspectiva analítica, judicial y geopolítica.
+
+---
+
+## Preguntas de Negocio
+
+## 1. Perfil de las Víctimas y Factores de Riesgo
+
+- ¿Qué tipo de medio de comunicación sufre más ataques violentos?
+
+  - Prensa escrita
+  - Televisión
+  - Radio
+  - Medios digitales
+  - Plataformas mixtas
+
+- ¿Cuál es la proporción de víctimas locales frente a periodistas extranjeros?
+
+- ¿Existe diferencia de riesgo entre periodistas contratados (Staff) y colaboradores independientes (Freelance)?
+
+- ¿Cómo ha evolucionado la distribución de género en los asesinatos a lo largo del tiempo?
+
+---
+
+## 2. Justicia e Impunidad Judicial
+
+- ¿Qué porcentaje de casos han sido completamente resueltos por los sistemas judiciales nacionales?
+
+- ¿Qué porcentaje de crímenes permanece sin resolución o en estado de impunidad?
+
+- ¿Qué países presentan la mayor tasa de impunidad judicial?
+
+- ¿Qué regiones del mundo presentan menor capacidad de resolución judicial?
+
+- ¿Existe relación entre estar en una zona de conflicto y una menor probabilidad de resolución?
+
+---
+
+## 3. Responsabilidad Gubernamental
+
+- ¿Qué gobiernos responden a las solicitudes formales realizadas por UNESCO?
+
+- ¿Qué países presentan menor nivel de cooperación institucional?
+
+- ¿Existe relación entre la respuesta gubernamental y una mayor tasa de resolución judicial?
+
+- ¿Los países que responden oficialmente resuelven los casos con mayor rapidez?
+
+---
+
+## 4. Tendencias Temporales y Geográficas
+
+- ¿El número anual de asesinatos está aumentando o disminuyendo globalmente?
+
+- ¿Cuáles son los países con mayor acumulación histórica de casos?
+
+- ¿Qué regiones representan actualmente los principales hotspots globales?
+
+- ¿Existen patrones geográficos persistentes de violencia contra periodistas?
+
+---
+
+## Dataset Utilizado
 
 Fuente oficial:
 
-https://data.unesco.org/explore/dataset/fej001/information/?disjunctive.nationality&disjunctive.gender&disjunctive.local&disjunctive.media&disjunctive.country_title_en&disjunctive.staff&disjunctive.enquiry_status&disjunctive.date_resolution&sort=date&dataChart=eyJxdWVyaWVzIjpbeyJjaGFydHMiOlt7InR5cGUiOiJjb2x1bW4iLCJmdW5jIjoiQVZHIiwieUF4aXMiOiJpZCIsInNjaWVudGlmaWNEaXNwbGF5Ijp0cnVlLCJjb2xvciI6InJhbmdlLWN1c3RvbSJ9XSwieEF4aXMiOiJkYXRlIiwibWF4cG9pbnRzIjoiIiwidGltZXNjYWxlIjoieWVhciIsInNvcnQiOiIiLCJzZXJpZXNCcmVha2Rvd24iOiJnZW5kZXIiLCJzdGFja2VkIjoibm9ybWFsIiwiY29uZmlnIjp7ImRhdGFzZXQiOiJmZWowMDEiLCJvcHRpb25zIjp7ImRpc2p1bmN0aXZlLm5hdGlvbmFsaXR5Ijp0cnVlLCJkaXNqdW5jdGl2ZS5nZW5kZXIiOnRydWUsImRpc2p1bmN0aXZlLmxvY2FsIjp0cnVlLCJkaXNqdW5jdGl2ZS5tZWRpYSI6dHJ1ZSwiZGlzanVuY3RpdmUuY291bnRyeV90aXRsZV9lbiI6dHJ1ZSwiZGlzanVuY3RpdmUuc3RhZmYiOnRydWUsImRpc2p1bmN0aXZlLmVucXVpcnlfc3RhdHVzIjp0cnVlLCJkaXNqdW5jdGl2ZS5kYXRlX3Jlc29sdXRpb24iOnRydWUsInNvcnQiOiJkYXRlIn19fV0sImRpc3BsYXlMZWdlbmQiOnRydWUsImFsaWduTW9udGgiOnRydWV9
+**UNESCO Observatory of Killed Journalists**
 
-El dataset contiene registros históricos sobre asesinatos de periodistas y seguimiento judicial realizado por UNESCO.
+Fuente de datos pública:
 
-### Características del Dataset
+[UNESCO](https://data.unesco.org/explore/dataset/fej001/table/?disjunctive.nationality&disjunctive.gender&disjunctive.local&disjunctive.media&disjunctive.country_title_en&disjunctive.staff&disjunctive.enquiry_status&disjunctive.date_resolution&sort=date&dataChart=eyJxdWVyaWVzIjpbeyJjaGFydHMiOlt7InR5cGUiOiJjb2x1bW4iLCJmdW5jIjoiQVZHIiwieUF4aXMiOiJpZCIsInNjaWVudGlmaWNEaXNwbGF5Ijp0cnVlLCJjb2xvciI6InJhbmdlLWN1c3RvbSJ9XSwieEF4aXMiOiJkYXRlIiwibWF4cG9pbnRzIjoiIiwidGltZXNjYWxlIjoieWVhciIsInNvcnQiOiIiLCJzZXJpZXNCcmVha2Rvd24iOiJnZW5kZXIiLCJzdGFja2VkIjoibm9ybWFsIiwiY29uZmlnIjp7ImRhdGFzZXQiOiJmZWowMDEiLCJvcHRpb25zIjp7ImRpc2p1bmN0aXZlLm5hdGlvbmFsaXR5Ijp0cnVlLCJkaXNqdW5jdGl2ZS5nZW5kZXIiOnRydWUsImRpc2p1bmN0aXZlLmxvY2FsIjp0cnVlLCJkaXNqdW5jdGl2ZS5tZWRpYSI6dHJ1ZSwiZGlzanVuY3RpdmUuY291bnRyeV90aXRsZV9lbiI6dHJ1ZSwiZGlzanVuY3RpdmUuc3RhZmYiOnRydWUsImRpc2p1bmN0aXZlLmVucXVpcnlfc3RhdHVzIjp0cnVlLCJkaXNqdW5jdGl2ZS5kYXRlX3Jlc29sdXRpb24iOnRydWUsInNvcnQiOiJkYXRlIn19fV0sImRpc3BsYXlMZWdlbmQiOnRydWUsImFsaWduTW9udGgiOnRydWV9)
 
-| Métrica | Valor |
-|----------|-------|
-| Registros | 1864 |
-| Columnas | 41 |
-| Cobertura | Global |
-| Periodo | 1993 - 2026 |
-| Países | +100 |
+El dataset contiene información desde 1993 sobre:
 
----
-
-## Objetivo del Proyecto
-
-Desarrollar un análisis exploratorio y estadístico que permita identificar factores asociados a la impunidad judicial en asesinatos de periodistas a nivel global.
-
-Objetivos específicos:
-
-- Identificar tendencias históricas de asesinatos  
-- Detectar países con mayores niveles de riesgo  
-- Calcular tasas globales de impunidad  
-- Evaluar impacto de zonas de conflicto  
-- Construir KPIs para monitoreo ejecutivo  
-- Generar dashboard interactivo para análisis visual  
+- país del incidente
+- fecha del asesinato
+- nacionalidad
+- género
+- tipo de medio
+- condición laboral
+- zona de conflicto
+- estado judicial del caso
+- fecha de resolución
+- solicitudes oficiales de UNESCO
+- respuesta gubernamental
+- información geográfica asociada
 
 ---
 
-## Arquitectura del Proyecto
+## Stack Tecnológico
 
-```text
-Archivo CSV (UNESCO)
-          ↓
-Limpieza de Datos (Python)
-          ↓
-Transformación y Feature Engineering
-          ↓
-Análisis Exploratorio (EDA)
-          ↓
-Análisis Estadístico
-          ↓
-Consultas SQL
-          ↓
-Dashboard en Power BI
-          ↓
-Obtención de Insights
-```
+Lenguajes y herramientas utilizadas:
 
----
-
-## Herramientas Utilizadas
-
-### Lenguaje Principal
-
+- Python
 - SQL
-
-### Librerías
-
-- Pandas 
-- NumPy  
-- Matplotlib  
-- Plotly  
-- SciPy
-- SQLAlchemy
-- Jupyter environment
-
-### Bases de Datos
-
-- PostgreSQL
-
-### Business Intelligence
-
-- Power BI  
-
-### Desarrollo
-
-- Jupyter Notebook  
-- Visual Studio Code  
-- Git  
-- GitHub  
-
----
-
-## Proceso de Limpieza de Datos
-
-El dataset original requirió un proceso de preprocesamiento antes del análisis.
-
-Actividades realizadas:
-
-- Eliminación de columnas irrelevantes o metadata  
-- Conversión de variables tipo fecha  
-- Conversión de edad a variable numérica  
-- Eliminación de registros duplicados  
-- Tratamiento de valores nulos  
-- Estandarización de variables categóricas  
-- Exportación del dataset limpio para análisis posterior  
-
----
-
-## Ingeniería de Variables (Feature Engineering)
-
-Se crearon variables adicionales para enriquecer el análisis.
-
-| Variable | Descripción |
-|-----------|-------------|
-| year | Año extraído de la fecha del incidente |
-| month | Mes del incidente |
-| decade | Década del incidente |
-| resolved | Variable binaria (1 = caso resuelto) |
-| impunity | Variable binaria (1 = caso no resuelto) |
-| resolution_days | Días transcurridos hasta resolución |
-
----
-
-## Análisis Exploratorio de Datos (EDA)
-
-Se analizaron múltiples dimensiones del dataset.
-
-### Análisis Temporal
-
-Preguntas analizadas:
-
-- ¿Cómo evolucionaron los casos a lo largo del tiempo?
-- ¿Qué años registraron más incidentes?
-
-Visualización:
-
-- Series temporales por año
-
----
-
-### Análisis Geográfico
-
-Preguntas analizadas:
-
-- ¿Qué países concentran mayor cantidad de casos?
-- ¿Qué regiones presentan mayor nivel de riesgo?
-
-Visualización:
-
-- Ranking por países  
-- Mapa global interactivo  
-
----
-
-### Perfil Demográfico
-
-Preguntas analizadas:
-
-- Distribución por género  
-- Distribución por edad  
-
-Visualización:
-
-- Pie chart  
-- Histograma  
-
----
-
-### Análisis por Tipo de Medio
-
-Categorías analizadas:
-
-- Televisión  
-- Radio  
-- Medios impresos  
-- Medios digitales  
-
-Pregunta:
-
-- ¿Qué tipo de medio presenta mayor vulnerabilidad?
-
-Visualización:
-
-- Gráfico de barras  
-
----
-
-## Análisis Estadístico
-
-Se realizó una prueba estadística para evaluar si trabajar en zonas de conflicto afecta la probabilidad de resolución judicial.
-
-### Hipótesis planteada
-
-**H0:** Las zonas de conflicto no afectan la probabilidad de resolución judicial  
-
-**H1:** Las zonas de conflicto afectan significativamente la probabilidad de resolución judicial
-
-Método aplicado:
-
-- Prueba Chi-Cuadrado
-
-Implementado utilizando:
-
-- SciPy
-
----
-
-## KPIs Analizados
-
-Se construyeron indicadores clave para monitoreo ejecutivo.
-
-| KPI | Descripción |
-|-------|-------------|
-| Total de Casos | Número total de asesinatos registrados |
-| Países Afectados | Cantidad de países con registros |
-| Tasa de Resolución | Porcentaje de casos resueltos |
-| Tasa de Impunidad | Porcentaje de casos sin resolver |
-| Tiempo Promedio de Resolución | Días promedio hasta cierre judicial |
-| Casos en Zona de Conflicto | Porcentaje de casos ocurridos en conflicto |
-
----
-
-## Hallazgos Principales
-
-### 1. Alta tasa de impunidad global
-
-Una gran proporción de casos registrados permanece sin resolución judicial.
-
----
-
-### 2. Concentración geográfica
-
-Un número reducido de países concentra la mayoría de casos reportados.
-
----
-
-### 3. Impacto de zonas de conflicto
-
-Los casos ocurridos en zonas de conflicto presentan menor probabilidad de resolución.
-
----
-
-### 4. Diferencias según tipo de medio
-
-Existen sectores de medios con mayor nivel de exposición al riesgo.
-
----
-
-### 5. Procesos judiciales extensos
-
-Los casos resueltos suelen requerir largos periodos antes de alcanzar una resolución definitiva.
-
----
-
-## Análisis SQL
-
-Se realizaron consultas analíticas para explorar patrones del dataset.
-
-Ejemplo:
-
-### Países con mayor cantidad de casos
-
-```sql
-SELECT
-    country,
-    COUNT(*) total_cases
-FROM journalist_cases
-GROUP BY country
-ORDER BY total_cases DESC;
-```
-
-### Tasa de impunidad por país
-
-```sql
-SELECT
-    country,
-    COUNT(*) total_cases,
-    AVG(impunity)*100 impunity_rate
-FROM journalist_cases
-GROUP BY country;
-```
-
----
-
-## Dashboard
-
-Dashboard interactivo desarrollado en:
-
-**Power BI**
-
-Secciones principales:
-
-### Resumen Ejecutivo
-
-- Total de casos  
-- Tasa de resolución  
-- Tasa de impunidad  
-- Países afectados  
-
-### Análisis Geográfico
-
-- Mapa global  
-- Filtros por país y región  
-
-### Análisis Judicial
-
-- Casos resueltos vs no resueltos  
-- Tiempo promedio de resolución  
-
-### Análisis de Riesgo
-
-- Zonas de conflicto  
-- Género  
-- Tipo de medio  
-- Distribución por edad  
+- Pandas
+- NumPy
+- Matplotlib
+- Plotly
+- Jupyter Notebook
+- Power BI
+
+Herramientas complementarias:
+
+- Visual Studio Code → desarrollo y organización del proyecto
+- Git → control de versiones
+- GitHub Repository Hosting → documentación y portafolio
+- Jupyter Notebook → análisis exploratorio y documentación técnica
+- Microsoft Excel → validación rápida y revisión manual del dataset
+- Microsoft Power BI → dashboard e indicadores ejecutivos
 
 ---
 
 ## Estructura del Proyecto
 
 ```text
-journalist-safety-analysis/
+journalist-impunity-analysis/
 
 data/
  ├── raw/
+ │    └── fej001.csv
  └── processed/
+      ├── cleaned_unesco.csv
+      └── sql_ready.csv
 
 notebooks/
  ├── 01_data_cleaning.ipynb
- ├── 02_eda.ipynb
- └── 03_statistical_analysis.ipynb
+ ├── 02_victim_risk_profile_analysis.ipynb
+ ├── 03_judicial_impunity_analysis.ipynb
+ ├── 04_government_accountability_analysis.ipynb
+ └── 05_temporal_geographic_analysis.ipynb
 
 src/
+ ├── load_data.py
  ├── clean_data.py
- ├── analysis.py
  ├── feature_engineering.py
+ ├── analysis.py
 
 sql/
  ├── create_tables.sql
- └── analysis_queries.sql
+ ├── impunity_analysis.sql
+ └── government_analysis.sql
 
 dashboard/
+ └── powerbi_dashboard.pbix
 
 README.md
 requirements.txt
+main.py
 ```
 
 ---
 
-## Habilidades Demostradas
+## Pipeline Analítico
 
-Este proyecto demuestra competencias aplicadas a roles de analítica de datos.
-
-- Limpieza y transformación de datos  
-- SQL Analytics  
-- Exploratory Data Analysis  
-- Diseño de KPIs  
-- Análisis estadístico  
-- Visualización de datos  
-- Diseño de dashboards  
-- Storytelling con datos  
-- Estructuración de proyectos end-to-end  
+```text
+Dataset Original CSV
+        ↓
+Data Cleaning
+        ↓
+Feature Engineering
+        ↓
+Análisis Exploratorio
+        ↓
+Análisis Estadístico
+        ↓
+Consultas SQL
+        ↓
+Dashboard en Power BI
+        ↓
+Insights y Conclusiones
+```
 
 ---
 
-## Posibles Mejoras Futuras
+## KPIs Principales
 
-- Modelo predictivo para estimar probabilidad de impunidad  
-- Dashboard web interactivo usando :contentReference[oaicite:12]{index=12}  
-- Automatización ETL  
-- Sistema de scoring de riesgo por país  
-- Implementación en entorno cloud  
+Indicadores principales analizados en el proyecto:
+
+- Total de casos registrados
+- Tasa global de resolución judicial
+- Tasa global de impunidad
+- Tiempo promedio hasta resolución judicial
+- Tasa de respuesta gubernamental
+- Proporción de periodistas locales vs extranjeros
+- Distribución por medio de comunicación
+- Tasa de resolución en zonas de conflicto
+- Países con mayor índice de impunidad
+- Tendencia anual de asesinatos
+
+---
+
+## Principales Técnicas Aplicadas
+
+### Limpieza y Preparación
+
+- manejo de valores nulos
+- transformación de variables
+- normalización de categorías
+- feature engineering
+
+### Python Analysis
+
+- análisis exploratorio (EDA)
+- groupby analysis
+- crosstab analysis
+- KPI calculation
+
+### Statistical Analysis
+
+- prueba Chi-Square
+- análisis comparativo entre grupos
+- análisis de tendencias temporales
+
+### SQL Analysis
+
+- agregaciones
+- joins
+- subqueries
+- ranking de países
+
+### Business Intelligence
+
+Dashboard interactivo desarrollado en:
+
+(proximamente)
+
+---
+
+## Insights Esperados
+
+Al finalizar el proyecto se busca identificar:
+
+- patrones globales de impunidad judicial
+- regiones con mayores riesgos estructurales para periodistas
+- impacto de conflictos armados en la justicia local
+- sectores de medios más vulnerables
+- nivel de cooperación institucional entre gobiernos y UNESCO
+- evolución histórica de la violencia contra periodistas
+
+---
+
+## Objetivo Profesional del Proyecto
+
+Proyecto desarrollado como parte de mi portafolio profesional orientado a posiciones relacionadas con:
+
+- Data Analyst
+- BI Analyst
+- Analytics Engineer
+- Business Intelligence Developer
+
+Enfoque principal:
+
+Transformar datos complejos en análisis accionables y visualizaciones orientadas a toma de decisiones.
 
 ---
 
